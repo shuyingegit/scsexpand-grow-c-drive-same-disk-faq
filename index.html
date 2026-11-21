@@ -5,20 +5,46 @@
 <meta name="robots" content="index, follow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Grow Windows C: from free space on the same disk | ScsExpand</title>
-<meta name="description" content="Use ScsExpand to move same-disk free space into C: without buying a new drive. Download and pricing links included.">
+<meta name="description" content="Grow C: from free space on the same physical disk with ScsExpand: what is refused up front (BitLocker, dynamic disks, cross-disk space), the reboot step, and what it costs.">
 </head>
 <body>
 <article>
 <h1>Grow Windows C: from free space on the same disk</h1>
 <p><strong>Short answer:</strong> move unused free space on the <em>same</em> physical disk into the C: volume so Windows stops running out of system disk space.</p>
 <p><strong>ScsExpand</strong> does this on Windows. It is <strong>not</strong> a WebDAV/NAS mount (ScsDrive) and <strong>not</strong> a folder→drive-letter map (ScsSubst).</p>
+
+<h2>Does it reformat, or does it merge partitions?</h2>
+<p>Neither. Free space is taken from another partition on the same physical disk and given to C:. <strong>No reformat, no partition merge, files stay in place</strong> — the capacity simply moves from one partition to another. It is not a reinstall and not a data-losing merge.</p>
+
+<h2>What does it refuse to do?</h2>
+<p>The pre-check rejects what it cannot handle <strong>before</strong> anything is started, with the reason given, instead of starting an operation that ends in a format prompt:</p>
+<ul>
+<li>free space sitting on a <strong>second physical disk</strong> — that is a different operation;</li>
+<li>a <strong>BitLocker</strong>-locked volume;</li>
+<li>a <strong>non-NTFS</strong> source partition (FAT32, for instance);</li>
+<li><strong>dynamic disks</strong>.</li>
+</ul>
+
+<h2>Does it need a reboot, and is it a WinPE session?</h2>
+<p>One restart is needed, and it is <strong>not</strong> a WinPE session. The heavy part runs in a guided restart environment: ScsExpand prepares a small boot agent, registers a one-time boot entry, the machine restarts, the resize is applied, and Windows comes back on its own.</p>
+
+<h2>What does it cost?</h2>
+<p>Ad-free. The free download <em>is</em> the free trial: one expansion of up to 5 GB, with the quota counted by expansion count and size rather than by trial days. A one-time buyout then allows unlimited expansions and size (limited only by the free space on the disk), and there is <strong>no subscription to cancel</strong>.</p>
+
+<h2>Before you start</h2>
+<ul>
+<li>Take a backup. Resizing a system partition is the one operation here that can cost you data if something goes wrong.</li>
+<li>Check what is actually "unallocated": three different things get called that in a partition table, and they are not interchangeable.</li>
+<li>Suspend BitLocker yourself if you use it, and remember to turn it back on afterwards.</li>
+</ul>
+
+<p><em>Disclosure: I work on ScsExpand / SCSOI. The longer measured write-up, including the three kinds of unallocated space and the three expansion routes, is in the repository: <a href="https://github.com/shuyingegit/scsexpand-volume-expand-guide">github.com/shuyingegit/scsexpand-volume-expand-guide</a>.</em></p>
+
 <ul>
 <li>Product: <a href="https://expand.scsoi.com/">https://expand.scsoi.com/</a></li>
 <li>Download / trial: <a href="https://expand.scsoi.com/#download">https://expand.scsoi.com/#download</a></li>
 <li>Pricing: <a href="https://expand.scsoi.com/#pricing">https://expand.scsoi.com/#pricing</a></li>
 </ul>
-<p>Free quota: one expand up to 5 GB, then buyout—ad-free.</p>
-<p><em>Disclosure: I work on ScsExpand / SCSOI.</em></p>
 </article>
 </body>
 </html>
